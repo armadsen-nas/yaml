@@ -1,0 +1,197 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+frontend:
+  # Load frontend themes from the themes folder
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /home/armadsen/docker/ha1/config/www/community/lovelace-card-mod/card-mod.js   # LCARS
+
+automation: !include automations.yaml
+# script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Generic Hygrostat
+generic_hygrostat:
+  - name: Hygrostat Bathroom
+    humidifier: switch.ventilation_switch_0
+    target_sensor: sensor.temperature_and_humidity_sensor_humidity
+    min_humidity: 30
+    max_humidity: 65
+    target_humidity: 50
+    dry_tolerance: 3
+    wet_tolerance: 0
+    device_class: "dehumidifier"
+    min_cycle_duration:
+      minutes: 5
+    initial_state: true
+    away_humidity: 35
+    away_fixed: True
+    sensor_stale_duration: 00:15:00
+
+notify:
+  - name: "sendmail"
+    platform: smtp
+    server: "send.one.com"
+    port: 587
+    sender: "armadsen@lynge.agency"
+    encryption: starttls
+    username: "armadsen@lynge.agency"
+    password: "9R_#1&k5su7ax?1hEYlT"
+    recipient:
+      - "arnelyngemadsen@gmail.com"
+    sender_name: "Casa Madsen"
+
+sensor:
+  - platform: time_date      # LCARS
+    display_options:         # LCARS
+      - 'time'               # LCARS
+      - 'date'               # LCARS
+      - 'date_time'          # LCARS
+      - 'date_time_utc'      # LCARS
+      - 'date_time_iso'      # LCARS
+      - 'time_date'          # LCARS
+      - 'time_utc'           # LCARS
+
+mqtt:
+  sensor:
+    - name: "M720Q CPU load"
+      state_topic: "Debian/sensors"
+      value_template: "{{ value_json.cpu_load }}"
+      unit_of_measurement: "%"
+      # device_class removed — "%" is not valid for "power"
+
+    - name: "M720Q Max temp"
+      state_topic: "Debian/sensors"
+      value_template: "{{ value_json.cpu_temp }}"
+      unit_of_measurement: "°C"
+      device_class: temperature
+
+    - name: "M720Q disk load"
+      state_topic: "Debian/disks"
+      value_template: "{{ value_json.diskM720Q }}"
+      unit_of_measurement: "%"
+
+    - name: "Frigate disk load"
+      state_topic: "Debian/disks"
+      value_template: "{{ value_json.diskFrigate }}"
+      unit_of_measurement: "%"
+
+    - name: "DS218+ disk load"
+      state_topic: "Debian/disks"
+      value_template: "{{ value_json.diskDS218 }}"
+      unit_of_measurement: "%"
+
+template:
+  - sensor:
+    - name: "Dishwasher Finish Time Local"
+      state: >
+        {% set ts = states('sensor.dishwasher_program_finish_time') %}
+        {% if ts not in ['unknown', 'unavailable', 'none'] %}
+          {% set ts_local = as_timestamp(ts) | timestamp_custom('%H:%M', true) %}
+          {{ ts_local }}
+        {% else %}
+          -
+        {% endif %}
+# 17Track start
+  - trigger:
+      - trigger: time_pattern
+        hours: /1
+      - trigger: homeassistant
+        event: start
+    action:
+      - action: seventeentrack.get_packages
+        data:
+          config_entry_id: 01KGD5B294T7BB1DM19ZFBJ9MP
+          package_state:
+            - in_transit
+        response_variable: result
+    sensor:
+      - name: "Packages in transit"
+        unique_id: packages_in_transit
+        state: "{{ result.packages | count }}"
+        attributes:
+          packages: "{{ result.packages }}"
+  - trigger:
+      - trigger: time_pattern
+        hours: /1
+      - trigger: homeassistant
+        event: start
+    action:
+      - action: seventeentrack.get_packages
+        data:
+          config_entry_id: 01KGD5B294T7BB1DM19ZFBJ9MP
+          package_state:
+            - ready_to_be_picked_up
+        response_variable: result
+    sensor:
+      - name: "Packages ready for pickup"
+        unique_id: packages_ready_for_pickup
+        state: "{{ result.packages | count }}"
+        attributes:
+          packages: "{{ result.packages }}"
+# 17Track end
+
+rest_command:
+# Turn off screen saver on Shelly Wall Display X2
+  x2_screen_on:
+    url: "http://192.168.1.41/rpc/Ui.Tap"
+    method: POST
+    verify_ssl: false
+    content_type: "application/json"
+    payload: >
+      {
+        "id": 0,
+        "method": "Ui.Tap",
+        "params": {
+          "x": 120,
+          "y": 80
+        }
+      }
+# Count down from 30 to 0. Upload audio file to shelly first. Update id to match uploaded file.
+  x2_alarm:
+    url: "http://192.168.1.41/rpc/Media.MediaPlayer.PlayAudioClip"
+    method: POST
+    verify_ssl: false
+    content_type: "application/json"
+    payload: >
+      {
+        "id": 0,
+        "method": "Media.MediaPlayer.PlayAudioClip",
+        "params": {
+          "id": 14,
+          "sound": beep,
+          "volume": 80,
+          "duration": 30000
+        }
+      }
+
+shell_command:
+# For Doorbell cameras Reolink D340P, we use the D340P detection. Not frigate detection.
+  bryggersdoorbell_trigger_car_event: >
+    curl -X POST 'http://192.168.1.67:5000/api/events/BryggersD340P/car/create' -H 'Content-Type: application/json' -d '{"duration":30, "include_recording":true}'
+#  bryggersdoorbell_trigger_person_event: >
+#    curl -X POST 'http://192.168.1.67:5000/api/events/BryggersD340P/person/create' -H 'Content-Type: application/json' -d '{"duration":30, "include_recording":true}'
+  bryggersdoorbell_trigger_dog_event: >
+    curl -X POST 'http://192.168.1.67:5000/api/events/BryggersD340P/dog/create' -H 'Content-Type: application/json' -d '{"duration":30, "include_recording":true}'
+#  entredoorbell_trigger_person_event: >
+#    curl -X POST 'http://192.168.1.67:5000/api/events/EntreD340P/person/create' -H 'Content-Type: application/json' -d '{"duration":30, "include_recording":true}'
+  entredoorbell_trigger_dog_event: >
+    curl -X POST 'http://192.168.1.67:5000/api/events/EntreD340P/dog/create' -H 'Content-Type: application/json' -d '{"duration":30, "include_recording":true}'
+
+script:
+  x2_alarm_with_power_check:
+    alias: "X2 Alarm With Power Check"
+    sequence:
+      - if:
+          - condition: device
+            type: is_powered
+            device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+            entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+            domain: binary_sensor
+        then:
+          - service: rest_command.x2_screen_on
+            data: {}
+          - service: rest_command.x2_alarm
+            data: {}

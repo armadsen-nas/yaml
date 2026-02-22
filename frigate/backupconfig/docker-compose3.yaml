@@ -1,0 +1,26 @@
+services:
+  frigate:
+    container_name: frigate
+    privileged: true # needed to enable frigate to access GPU
+    environment:
+      - TZ=Europe/Copenhagen
+      - LIBVA_DRIVER_NAME=i965 # Needed for VAAPI HW acceleration
+    restart: no
+    stop_grace_period: 30s
+    image: ghcr.io/blakeblackshear/frigate:stable
+    shm_size: '250mb'
+    volumes:
+      - ./config:/config
+#      - ./storage:/media/frigate
+#      - /mnt/frigate:/media/frigate
+      - ./NASstorage:/media/frigate
+      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "8971:8971"
+      - "8554:8554" # RTSP feeds
+      - "5000:5000" # unsecure, used by HA
+    devices:
+      - /dev/dri/renderD128 # for intel hwaccel, seems correct for my hardware

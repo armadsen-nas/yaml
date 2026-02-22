@@ -1,0 +1,172 @@
+timestamp_style:
+  format: '%d/%m/%Y %H:%M:%S'
+
+auth:
+  enabled: true # Don't change this
+
+tls:
+  enabled: false
+
+mqtt:
+  enabled: true
+  host: 192.168.1.67
+  port: 1883
+
+# Detector for yolov9 model
+detectors:
+  onnx:
+    type: onnx
+
+model:
+  model_type: yolo-generic
+  width: 320
+  height: 320
+  input_tensor: nchw
+  input_dtype: float
+  path: /config/model_cache/yolov9-t-320.onnx
+  labelmap_path: /labelmap/coco-80.txt
+
+face_recognition:
+  enabled: true
+  model_size: large
+
+record:
+  enabled: true
+  retain:
+    days: 5
+    mode: motion
+  alerts:
+    retain:
+      days: 5
+      mode: motion
+  detections:
+    retain:
+      days: 5
+      mode: motion
+
+# Disable reviews in review tab in frigate
+review:
+  alerts:
+    labels: []
+  detections:
+    labels: []
+
+go2rtc:
+  streams:
+    Driveway:
+      - rtsp://192.168.1.50:554/live1.sdp
+      - ffmpeg:Driveway#video=h264#preset-vaapi
+    Bryggers:
+      - rtsp://192.168.1.51:554/live1.sdp
+      - ffmpeg:Bryggers#video=h264#preset-vaapi
+    Loft:
+      - rtsp://192.168.1.52:554/live1.sdp
+      - ffmpeg:Loft#video=h264#preset-vaapi
+
+cameras:
+  Driveway:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Driveway
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+      filters:
+        person:
+          min_area: 75000       # Minimum size in pixels (e.g. 100x50)
+        dog:
+          min_area: 1000       # Earlier this was 2000
+          max_area: 50000
+        cat:
+          min_area: 1000       # Earlier this was 2000
+          max_area: 50000
+    motion:
+      threshold: 30            # default is 30
+      contour_area: 10         # default is 10
+      improve_contrast: true
+      mask:
+        - 0.314,0.244,0.054,0.208,0.055,0.128,0.105,0.098,0.304,0.049
+        - 0.003,0.003,0.005,0.069,0.086,0.061,0.165,0.029,0.168,0.002
+  Bryggers:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Bryggers
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      fps: 5 # Default is 5.
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+      filters:
+        person:
+          min_area: 12000       # Minimum size in pixels (e.g. 100x50)
+          threshold: 0.7       # Default is 0.7
+        dog:
+          min_area: 1000       # Earlier this was 2000
+          max_area: 50000
+          threshold: 0.6       # Default is 0.7
+        cat:
+          min_area: 1000       # Earlier this was 2000
+          max_area: 50000
+          threshold: 0.6       # Default is 0.7
+        car:
+          min_area: 20000
+    motion:
+      mask:
+        - 0.139,0.995,0.278,0.732,0.381,0.743,0.448,0.756,0.455,0.879,0.458,0.993
+        - 0.702,0.792,0.646,0.658,0.768,0.406,0.813,0.337,0.845,0.368,0.91,0.419
+        - 0.202,-0.002,0.231,0.155,0.345,0.095,0.396,0.052,0.397,0.008
+        - 0.977,0.252,0.782,0.01,0.994,0.003,0.994,0.226
+        - 0.598,0.002,0.577,0.264,0.526,0.285,0.408,0.059,0.408,0.008
+        - 0.001,0.069,0.091,0.067,0.175,0.038,0.175,0.002,0.001,0.007
+      threshold: 30            # default is 30
+      contour_area: 10         # default is 10
+      improve_contrast: true
+    zones: {}
+  Loft:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Loft
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+      filters:
+        person:
+          mask: 0.753,0.823,0.824,0.813,0.842,0.975,0.764,0.98
+    motion:
+      enabled: true
+      threshold: 10        # Sensitivity to pixel changes (lower = more sensitive). Default: 30
+      contour_area: 5     # Minimum area of motion to trigger detection. Default: 10
+      improve_contrast: true
+
+      mask: 0,0.003,0.003,0.056,0.088,0.059,0.166,0.029,0.166,0.007
+version: 0.16-0
+camera_groups: {}
+detect:
+  enabled: true

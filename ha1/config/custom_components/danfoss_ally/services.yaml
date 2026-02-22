@@ -1,0 +1,82 @@
+# Describes the format for available climate services
+
+set_preset_temperature:
+  name: Set preset temperature
+  description: Set target temperature of climate device.
+  target:
+    entity:
+      integration: danfoss_ally
+      domain: climate
+    device:
+      integration: danfoss_ally
+  fields:
+    temperature:
+      name: Temperature
+      description: New target temperature for HVAC.
+      selector:
+        number:
+          min: 0
+          max: 250
+          step: 0.5
+          mode: box
+    preset_mode:
+      name: Preset mode
+      description: Optional. Using current preset mode if not specified.
+      selector:
+        select:
+          options:
+            - label: "Home"
+              value: "home"
+            - label: "Away"
+              value: "away"
+            - label: "Manual"
+              value: "manual"
+            - label: "Pause"
+              value: "pause"
+            - label: "Holiday (Home)"
+              value: "holiday_sat"
+            - label: "Holiday (Away)"
+              value: "holiday"
+
+set_window_state_open:
+  name: Set window open state
+  description: Tell a radiator thermostat if window is open or closed (Icon does not have this feature). It takes a while for it to react.
+  target:
+    entity:
+      integration: danfoss_ally
+      domain: climate
+    device:
+      integration: danfoss_ally
+      model: "Danfoss Ally™ Radiator Thermostat"
+  fields:
+    window_open:
+      name: Window open
+      description: True = window open, false = closed
+      required: true
+      selector:
+        boolean:
+
+set_external_temperature:
+  name: Set external temperature
+  description: Sends an external temperature measurement to a radiator thermostat. It is similar to what an Ally Room Sensor does.
+  target:
+    entity:
+      integration: danfoss_ally
+      domain: climate
+    device:
+      integration: danfoss_ally
+      model: "Danfoss Ally™ Radiator Thermostat"
+  fields:
+    temperature:
+      name: Temperature
+      description: Temperature to send to thermostat. If not set or unknown will disable the external temperature.
+      required: false
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.1
+          mode: box
+          unit_of_measurement: "ºC"
+
+

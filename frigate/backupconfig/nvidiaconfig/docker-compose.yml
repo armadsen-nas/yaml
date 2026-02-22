@@ -1,0 +1,31 @@
+services:
+  frigate:
+    container_name: frigate
+    privileged: true # needed to enable frigate to access GPU
+    environment:
+      - TZ=Europe/Copenhagen
+    restart: no
+    stop_grace_period: 30s
+# nvidia configuration start
+    image: ghcr.io/blakeblackshear/frigate:stable-tensorrt
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # number of GPUs
+              capabilities: [gpu]
+# nvidia configuration end
+    shm_size: '512mb'
+    volumes:
+      - ./config:/config
+#      - ./storage:/media/frigate
+      - ./NASstorage:/media/frigate
+      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "8971:8971"
+      - "8554:8554" # RTSP feeds
+      - "5000:5000" # unsecure, used by HA

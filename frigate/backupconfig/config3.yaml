@@ -1,0 +1,149 @@
+timestamp_style:
+  format: '%d/%m/%Y %H:%M:%S'
+
+auth:
+  enabled: true # Don't change this
+
+tls:
+  enabled: false
+
+mqtt:
+  enabled: true
+  host: 192.168.1.67
+  port: 1883
+
+
+# https://github.com/blakeblackshear/frigate/discussions/19943
+# https://github.com/blakeblackshear/frigate/discussions/19943
+
+
+# Object detector is Intel GPU.
+detectors:
+  ov:
+    type: openvino
+    device: GPU
+
+# Objector detector uses this model, old conf, works
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+face_recognition:
+  enabled: true
+  model_size: large
+
+record:
+  enabled: True
+  retain:
+    days: 10
+    mode: motion
+  alerts:
+    retain:
+      days: 10
+      mode: motion
+  detections:
+    retain:
+      days: 10
+      mode: motion
+
+# Disable reviews in review tab in frigate
+review:
+  alerts:
+    labels: []
+  detections:
+    labels: []
+
+go2rtc:
+  streams:
+    Driveway:
+      - rtsp://192.168.1.50:554/live1.sdp "ffmpeg:back#video=h264#preset-vaapi"
+    Bryggers:
+      - rtsp://192.168.1.51:554/live1.sdp "ffmpeg:back#video=h264#preset-vaapi"
+    Loft:
+      - rtsp://192.168.1.52:554/live1.sdp "ffmpeg:back#video=h264#preset-vaapi"
+
+cameras:
+  Driveway:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Driveway
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+      filters:
+        person:
+          min_area: 5000       # Minimum size in pixels (e.g. 100x50)
+        dog:
+          min_area: 2000
+          max_area: 50000
+        cat:
+          min_area: 2000
+          max_area: 50000
+    motion:
+      mask:
+        - 0.307,0.033,0.325,0.385,0.054,0.254,0.002,0.301,0.002,0.139,0.109,0.072
+        - 0.032,0.566,0.085,0.534,0.133,0.678,0.081,0.7
+
+  Bryggers:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Bryggers
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+      filters:
+        person:
+          min_area: 12000       # Minimum size in pixels (e.g. 100x50)
+        dog:
+          min_area: 2000
+          max_area: 50000
+        cat:
+          min_area: 2000
+          max_area: 50000
+    motion:
+      mask:
+        - 0.997,0.498,0.776,0.311,0.636,0.674,0.718,0.807,0.55,0.998,0.996,0.997
+        - 0.367,0.992,0.328,0.825,0.139,0.841,0.079,0.998
+        - 0.607,0.002,0.592,0.285,0.5,0.329,0.42,0.268,0.364,0.198,0.326,0.139,0.226,0.165,0.188,0.195,0.187,0.291,0.196,0.422,0.198,0.547,0.134,0.592,0.049,0.643,0.005,0.678,0.005,0.003
+        - 0.684,0,0.952,0.336,0.997,0.191,0.996,0.002
+        - 0.779,0.321,0.75,0.308,0.68,0.448,0.644,0.676
+    zones: {}
+
+  Loft:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Loft
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    motion:
+      enabled: true
+      threshold: 25        # Sensitivity to pixel changes (lower = more sensitive). Default: 30
+      contour_area: 15     # Minimum area of motion to trigger detection. Default: 10
+      improve_contrast: true
+
+version: 0.16-0
+camera_groups: {}
+detect:
+  enabled: true

@@ -1,0 +1,214 @@
+timestamp_style:
+  format: '%d/%m/%Y %H:%M:%S'
+
+auth:
+  enabled: true # Don't change this
+
+tls:
+  enabled: false
+
+mqtt:
+  enabled: true
+  host: 192.168.1.67
+  port: 1883
+
+
+
+# Google Corel edgeTPU. On M720Q connect to rear panel, a blue USB.  2x USB 3.1 Gen 2.
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+# Corel end
+
+
+# Detector for yolov9 model
+#detectors:
+#  onnx:
+#    type: onnx
+
+#model:
+#  model_type: yolo-generic
+#  width: 320
+#  height: 320
+#  input_tensor: nchw
+#  input_dtype: float
+#  path: /config/model_cache/yolov9-t-320.onnx
+#  labelmap_path: /labelmap/coco-80.txt
+# Yolo end
+
+
+# Object detector is Intel GPU.
+#detectors:
+#  ov:
+#    type: openvino
+#    device: GPU
+
+# Objector detector model (for Intel GPU)
+#model:
+#  width: 300
+#  height: 300
+#  input_tensor: nhwc
+#  input_pixel_format: bgr
+#  path: /openvino-model/ssdlite_mobilenet_v2.xml
+#  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+# Intel GPU end
+
+face_recognition:
+  enabled: true
+  model_size: large
+
+record:
+  enabled: true
+  retain:
+    days: 10
+    mode: motion
+  alerts:
+    retain:
+      days: 10
+      mode: motion
+  detections:
+    retain:
+      days: 10
+      mode: motion
+
+# Disable reviews in review tab in frigate
+review:
+  alerts:
+    labels: []
+  detections:
+    labels: []
+
+go2rtc:
+  streams:
+    Driveway:
+      - rtsp://192.168.1.50:554/live1.sdp
+    Driveway_sub:
+      - rtsp://192.168.1.50:554/live2.sdp
+    Bryggers:
+      - rtsp://192.168.1.51:554/live1.sdp
+    Bryggers_sub:
+      - rtsp://192.168.1.51:554/live2.sdp
+    Loft:
+      - rtsp://192.168.1.52:554/live1.sdp
+    Loft_sub:
+      - rtsp://192.168.1.52:554/live2.sdp
+
+# Global hwaccel configuration to avoid repetition at each camera
+ffmpeg:
+  hwaccel_args: preset-vaapi
+
+cameras:
+  Driveway:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Driveway_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        - path: rtsp://127.0.0.1:8554/Driveway
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+    detect:
+      enabled: true
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+      filters:
+        person:
+          min_area: 50000       # Minimum size in pixels (e.g. 100x50)
+          min_score: 0.5       # Default is 0.5
+          threshold: 0.7       # Default is 0.7
+        dog:
+          min_area: 10        # Earlier this was 2000
+          max_area: 5000
+        cat:
+          min_area: 10        # Earlier this was 2000
+          max_area: 5000
+    motion:
+      threshold: 30            # default is 30
+      contour_area: 10         # default is 10
+      improve_contrast: true
+      mask:
+        - 0.006,0.398,0.071,0.376,0.082,0.499,0.078,0.556,0.106,0.651,0.079,0.684
+        - 0.314,0.231,0.093,0.2,0.085,0.115,0.301,0.015
+        - 0.086,0.002,0.086,0.031,0.164,0.033,0.167,0.003
+  Bryggers:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Bryggers_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        - path: rtsp://127.0.0.1:8554/Bryggers
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+    detect:
+      enabled: true
+      fps: 5 # Default is 5.
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+      filters:
+        person:
+          min_area: 5000      # Minimum size in pixels (e.g. 100x50)
+          threshold: 0.7       # Default is 0.7
+        dog:
+          min_area: 10         # Earlier this was 2000
+          max_area: 5000
+          threshold: 0.6       # Default is 0.7
+        cat:
+          min_area: 10         # Earlier this was 2000
+          max_area: 5000
+          threshold: 0.6       # Default is 0.7
+        car:
+          min_area: 10000
+    motion:
+      threshold: 30            # default is 30
+      contour_area: 10         # default is 10
+      improve_contrast: true
+      mask:
+        - 0.086,0.002,0.086,0.029,0.164,0.031,0.166,0.008
+        - 0.224,0.995,0.271,0.773,0.385,0.807,0.415,0.835,0.446,0.882,0.462,0.956,0.455,0.997
+        - 0.227,0.007,0.245,0.1,0.386,0.033,0.43,0.088,0.52,0.278,0.589,0.249,0.605,0.003
+        - 0.897,0.447,0.837,0.439,0.793,0.435,0.764,0.488,0.734,0.579,0.717,0.624,0.702,0.668,0.737,0.74
+        - 0.96,0.316,0.72,0.003,0.997,0.002,0.998,0.191
+    zones: {}
+  Loft:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Loft_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        - path: rtsp://127.0.0.1:8554/Loft
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+    detect:
+      enabled: true
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+      filters:
+        person:
+          mask: 0.753,0.823,0.824,0.813,0.842,0.975,0.764,0.98
+    motion:
+      enabled: true
+      threshold: 10        # Sensitivity to pixel changes (lower = more sensitive). Default: 30
+      contour_area: 5     # Minimum area of motion to trigger detection. Default: 10
+      improve_contrast: true
+      mask: 0.088,0.005,0.087,0.038,0.168,0.039,0.17,0.003
+camera_groups: {}

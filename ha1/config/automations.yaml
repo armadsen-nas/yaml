@@ -1,0 +1,2295 @@
+- id: '1739517391566'
+  alias: Doorbell (Hoveddør)
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: siren.turn_on
+    metadata: {}
+    data: {}
+    target:
+      device_id: 5cf0cf3602623153bc7e6390b624372e
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: siren.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: 5cf0cf3602623153bc7e6390b624372e
+  mode: single
+- id: '1740296515565'
+  alias: Sunset (+5m) on
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:05:00
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 45e95f8828747996e9b988a5e1a57ac2
+    entity_id: 8ae264610bb4fd2c2e13c5000067945f
+    domain: switch
+  - type: turn_on
+    device_id: 36be8f7c5521adaf57b6a1a72d0ce349
+    entity_id: 746f870b6a40c471275c55a7e218097c
+    domain: switch
+  mode: single
+- id: '1740296686605'
+  alias: Sunrise (-1h) on
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: -01:00:00
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 45e95f8828747996e9b988a5e1a57ac2
+    entity_id: 8ae264610bb4fd2c2e13c5000067945f
+    domain: switch
+  - type: turn_on
+    device_id: 36be8f7c5521adaf57b6a1a72d0ce349
+    entity_id: 746f870b6a40c471275c55a7e218097c
+    domain: switch
+  mode: single
+- id: '1740333482810'
+  alias: Turn off at 2230
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:30:00'
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 45e95f8828747996e9b988a5e1a57ac2
+    entity_id: 8ae264610bb4fd2c2e13c5000067945f
+    domain: switch
+  - type: turn_off
+    device_id: 36be8f7c5521adaf57b6a1a72d0ce349
+    entity_id: 746f870b6a40c471275c55a7e218097c
+    domain: switch
+  mode: single
+- id: '1740333621908'
+  alias: Sunrise (+2h) off
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 02:00:00
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 45e95f8828747996e9b988a5e1a57ac2
+    entity_id: 8ae264610bb4fd2c2e13c5000067945f
+    domain: switch
+  - type: turn_off
+    device_id: 36be8f7c5521adaf57b6a1a72d0ce349
+    entity_id: 746f870b6a40c471275c55a7e218097c
+    domain: switch
+  mode: single
+- id: '1740594935279'
+  alias: External IP address check
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.myip
+  conditions: []
+  actions:
+  - action: notify.persistent_notification
+    metadata: {}
+    data:
+      message: External IP has changed
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      target:
+      - arnelyngemadsen@gmail.com
+      title: External IP address has changed
+      message: Update OpenVPN configuration.
+  mode: single
+- id: '1740772063336'
+  alias: TEST IMAP received
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.imap_armadsen_lynge_agency_messages
+  conditions: []
+  actions:
+  - action: notify.persistent_notification
+    metadata: {}
+    data:
+      message: IMAP message received
+  mode: single
+- id: '1740777523900'
+  alias: TEST imap content
+  description: ''
+  triggers:
+  - trigger: event
+    event_type:
+    - imap_content
+    id: custom_event
+    event_data:
+      sender: armadsen@live.com
+      initial: true
+      subject: SurveillanceAction Rule was triggered
+  conditions: []
+  actions:
+  - action: notify.persistent_notification
+    metadata: {}
+    data:
+      message: IMAP content
+  mode: single
+- id: '1741504098920'
+  alias: Danfoss Home 5 Stue
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_livingroom_dropdown
+    from: Heat on
+    to: Heat off
+  conditions: []
+  actions:
+  - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_2
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+    domain: climate
+    entity_id: db460c9fba52541060d859cf09e940df
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_3
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+    domain: climate
+    entity_id: 8c38e85fefe881f78ade0003e2debdca
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_spise_stue
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+    domain: climate
+    entity_id: ad441ebf90b102e944cfc7a091aee6ad
+    type: set_preset_mode
+    preset_mode: Manual
+  mode: single
+- id: '1741539792555'
+  alias: Danfoss Home 22,5 stue
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_livingroom_dropdown
+    from: Heat off
+    to: Heat on
+  conditions: []
+  actions:
+  - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_2
+    type: set_preset_temperature
+    temperature: 22.5
+    preset_mode: manual
+  - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_3
+    type: set_preset_temperature
+    temperature: 22.5
+    preset_mode: manual
+  - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_spise_stue
+    type: set_preset_temperature
+    temperature: 22.5
+    preset_mode: manual
+  - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+    domain: climate
+    entity_id: db460c9fba52541060d859cf09e940df
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+    domain: climate
+    entity_id: 8c38e85fefe881f78ade0003e2debdca
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+    domain: climate
+    entity_id: ad441ebf90b102e944cfc7a091aee6ad
+    type: set_preset_mode
+    preset_mode: Manual
+  - if:
+    - condition: time
+      after: '22:00:00'
+      before: 06:00:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+    then:
+    - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+      domain: climate
+      entity_id: db460c9fba52541060d859cf09e940df
+      type: set_preset_mode
+      preset_mode: away
+    - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+      domain: climate
+      entity_id: 8c38e85fefe881f78ade0003e2debdca
+      type: set_preset_mode
+      preset_mode: away
+    - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+      domain: climate
+      entity_id: ad441ebf90b102e944cfc7a091aee6ad
+      type: set_preset_mode
+      preset_mode: away
+    else:
+    - device_id: 1b5bb1a87d3581e0d01374f5ecdec856
+      domain: climate
+      entity_id: db460c9fba52541060d859cf09e940df
+      type: set_preset_mode
+      preset_mode: home
+    - device_id: 14d59d119e1a34f21bd47d4fe66e2b81
+      domain: climate
+      entity_id: 8c38e85fefe881f78ade0003e2debdca
+      type: set_preset_mode
+      preset_mode: home
+    - device_id: 68cc5551b6c630aaf26b78a0cc84e213
+      domain: climate
+      entity_id: ad441ebf90b102e944cfc7a091aee6ad
+      type: set_preset_mode
+      preset_mode: home
+  mode: single
+- id: '1741548425098'
+  alias: Danfoss Home 5 Heidi kontor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_heidi_kontor_dropdown
+    from: Heat on
+    to: Heat off
+  conditions: []
+  actions:
+  - device_id: 5580db495760f94acd9960ae569597c3
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_6
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: 5580db495760f94acd9960ae569597c3
+    domain: climate
+    entity_id: ea95bb2817a727ca5b85fa926af29ad1
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 978748f52147c9b225ef328a7a76c5db
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_8
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: 978748f52147c9b225ef328a7a76c5db
+    domain: climate
+    entity_id: 655502e28770008b99914623188de5fb
+    type: set_preset_mode
+    preset_mode: Manual
+  mode: single
+- id: '1741548561538'
+  alias: Danfoss Home 22 Heidi kontor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_heidi_kontor_dropdown
+    from: Heat off
+    to: Heat on
+  conditions: []
+  actions:
+  - device_id: 5580db495760f94acd9960ae569597c3
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_6
+    type: set_preset_temperature
+    temperature: 22.5
+    preset_mode: manual
+  - device_id: 978748f52147c9b225ef328a7a76c5db
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_8
+    type: set_preset_temperature
+    temperature: 22.5
+    preset_mode: manual
+  - device_id: 5580db495760f94acd9960ae569597c3
+    domain: climate
+    entity_id: ea95bb2817a727ca5b85fa926af29ad1
+    type: set_preset_mode
+    preset_mode: Manual
+  - device_id: 978748f52147c9b225ef328a7a76c5db
+    domain: climate
+    entity_id: 655502e28770008b99914623188de5fb
+    type: set_preset_mode
+    preset_mode: Manual
+  - if:
+    - condition: time
+      after: '22:00:00'
+      before: 06:00:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+    then:
+    - device_id: 5580db495760f94acd9960ae569597c3
+      domain: climate
+      entity_id: ea95bb2817a727ca5b85fa926af29ad1
+      type: set_preset_mode
+      preset_mode: away
+    - device_id: 978748f52147c9b225ef328a7a76c5db
+      domain: climate
+      entity_id: 655502e28770008b99914623188de5fb
+      type: set_preset_mode
+      preset_mode: away
+    else:
+    - device_id: 5580db495760f94acd9960ae569597c3
+      domain: climate
+      entity_id: ea95bb2817a727ca5b85fa926af29ad1
+      type: set_preset_mode
+      preset_mode: home
+    - device_id: 978748f52147c9b225ef328a7a76c5db
+      domain: climate
+      entity_id: 655502e28770008b99914623188de5fb
+      type: set_preset_mode
+      preset_mode: home
+  mode: single
+- id: '1741552701579'
+  alias: Danfoss Home 5 Arne kontor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_arne_kontor_dropdown
+    from: Heat on
+    to: Heat off
+  conditions: []
+  actions:
+  - device_id: e46d8a1231c8dbbef21e9543533304fc
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_4
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  - device_id: e46d8a1231c8dbbef21e9543533304fc
+    domain: climate
+    entity_id: e7f4a6ed28b5a719a70a4db72aab828e
+    type: set_preset_mode
+    preset_mode: Manual
+  mode: single
+- id: '1741552803274'
+  alias: Danfoss Home 22 Arne kontor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_arne_kontor_dropdown
+    from: Heat off
+    to: Heat on
+  conditions: []
+  actions:
+  - device_id: e46d8a1231c8dbbef21e9543533304fc
+    domain: danfoss_ally
+    entity_id: climate.danfoss_allytm_radiator_thermostat_4
+    type: set_preset_temperature
+    temperature: 20
+    preset_mode: manual
+  - device_id: e46d8a1231c8dbbef21e9543533304fc
+    domain: climate
+    entity_id: e7f4a6ed28b5a719a70a4db72aab828e
+    type: set_preset_mode
+    preset_mode: Manual
+  - if:
+    - condition: time
+      after: '22:00:00'
+      before: 06:00:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+    then:
+    - device_id: e46d8a1231c8dbbef21e9543533304fc
+      domain: climate
+      entity_id: e7f4a6ed28b5a719a70a4db72aab828e
+      type: set_preset_mode
+      preset_mode: away
+    else:
+    - device_id: e46d8a1231c8dbbef21e9543533304fc
+      domain: climate
+      entity_id: e7f4a6ed28b5a719a70a4db72aab828e
+      type: set_preset_mode
+      preset_mode: home
+  mode: single
+- id: '1742498020104'
+  alias: Doorbell (Bryggers)
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: siren.turn_on
+    metadata: {}
+    data: {}
+    target:
+      device_id: 8ebbbfbd7e3953ed582ccfc9495ce9ab
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: siren.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: 8ebbbfbd7e3953ed582ccfc9495ce9ab
+  mode: single
+- id: '1743534845870'
+  alias: Turn heat ON in Arne office when window closed
+  description: ''
+  triggers:
+  - type: not_opened
+    device_id: 4d0831f89dcb90edd11a370e173eebec
+    entity_id: 9d89b6a0fddadce0981f49c365dd35c7
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_select.heat_arne_kontor_dropdown
+    data:
+      option: Heat on
+    action: input_select.select_option
+  mode: single
+- id: '1743704934934'
+  alias: Turn heat OFF in Arne office when window is open
+  description: ''
+  triggers:
+  - type: opened
+    device_id: 4d0831f89dcb90edd11a370e173eebec
+    entity_id: 9d89b6a0fddadce0981f49c365dd35c7
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_arne_kontor_dropdown
+    data:
+      option: Heat off
+    action: input_select.select_option
+  mode: single
+- id: '1743706660828'
+  alias: Danfoss Home 22 soveværelse
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_bedroom_dropdown
+    from: Heat off
+    to: Heat on
+  conditions: []
+  actions:
+  - device_id: b431a1fddd04947d4b1f034fe3118a35
+    domain: danfoss_ally
+    entity_id: climate.radiator_sovevaerelse
+    type: set_preset_temperature
+    temperature: 22
+    preset_mode: manual
+  mode: single
+- id: '1743706797145'
+  alias: Danfoss Home 5 soveværelse
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_bedroom_dropdown
+    from: Heat on
+    to: Heat off
+  conditions: []
+  actions:
+  - device_id: b431a1fddd04947d4b1f034fe3118a35
+    domain: danfoss_ally
+    entity_id: climate.radiator_sovevaerelse
+    type: set_preset_temperature
+    temperature: 5
+    preset_mode: manual
+  mode: single
+- id: '1744203840390'
+  alias: Turn heat ON in Heidi office when window closed
+  description: ''
+  triggers:
+  - type: not_opened
+    device_id: bba8fbfb4374e81226f0203734fe4917
+    entity_id: da86f8d48097b9117e873ff1212e1cea
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_heidi_kontor_dropdown
+    data:
+      option: Heat on
+    action: input_select.select_option
+  mode: single
+- id: '1744204002108'
+  alias: Turn heat OFF in Heidi office when window is open
+  description: ''
+  triggers:
+  - type: opened
+    device_id: bba8fbfb4374e81226f0203734fe4917
+    entity_id: da86f8d48097b9117e873ff1212e1cea
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - data:
+      option: Heat off
+    action: input_select.select_option
+    target:
+      entity_id: input_select.heat_heidi_kontor_dropdown
+  mode: single
+- id: '1744399552974'
+  alias: Change to LCARS Modern
+  description: ''
+  triggers:
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 7bb6ba4700661dfa1a1f8b054debe95e
+    type: disarmed
+    trigger: device
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 19adb5266acde8832d507d183115f4f1
+    type: disarmed
+    trigger: device
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 81bdbe91fd8297a786c73fea0a9f856e
+    type: disarmed
+    trigger: device
+  conditions: []
+  actions:
+  - action: frontend.set_theme
+    metadata: {}
+    data:
+      mode: light
+      name: LCARS Modern
+  mode: single
+- id: '1744400867943'
+  alias: Change theme to LCARS 25C (Red Alert)
+  description: ''
+  triggers:
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 7bb6ba4700661dfa1a1f8b054debe95e
+    type: triggered
+    trigger: device
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 81bdbe91fd8297a786c73fea0a9f856e
+    type: triggered
+    trigger: device
+  - device_id: 9c1ac8a77073422bbdc688c78cdbfa4f
+    domain: alarm_control_panel
+    entity_id: 19adb5266acde8832d507d183115f4f1
+    type: triggered
+    trigger: device
+  conditions: []
+  actions:
+  - action: frontend.set_theme
+    metadata: {}
+    data:
+      mode: light
+      name: LCARS 25C (Red Alert)
+  mode: single
+- id: '1744468940740'
+  alias: Change theme to LCARS (Yellow Alert)
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.battery_alert
+    below: 20
+  conditions: []
+  actions:
+  - action: frontend.set_theme
+    metadata: {}
+    data:
+      mode: light
+      name: LCARS 25C (Yellow Alert)
+  mode: single
+- id: '1745519215707'
+  alias: Turn heat OFF in Soveværelse office when door is open
+  description: ''
+  triggers:
+  - type: opened
+    device_id: 70703c248619dd086092cd7c18effafb
+    entity_id: 1214aa5ddaf22ce63ff20e9e4d8dc2ae
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_bedroom_dropdown
+    data:
+      option: Heat off
+    action: input_select.select_option
+  mode: single
+- id: '1745519547582'
+  alias: Turn heat ON in Soveværelse office when window is closed
+  description: ''
+  triggers:
+  - type: not_opened
+    device_id: 70703c248619dd086092cd7c18effafb
+    entity_id: 1214aa5ddaf22ce63ff20e9e4d8dc2ae
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: template
+    value_template: '{% set n = now() %} {{ n.month >= 10  or n.month <= 4}}
+
+      '
+  - condition: time
+    after: 06:00:00
+    before: '22:00:00'
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_bedroom_dropdown
+    data:
+      option: Heat on
+    action: input_select.select_option
+  mode: single
+- id: '1745520408568'
+  alias: Turn heat ON in Stue office when door closed
+  description: ''
+  triggers:
+  - type: not_opened
+    device_id: e83736ec572e59392c983b72d4ecc2a5
+    entity_id: a2180b19da1c7b8a81a2eb12afa428da
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_livingroom_dropdown
+    data:
+      option: Heat on
+    action: input_select.select_option
+  mode: single
+- id: '1745520446523'
+  alias: Turn heat OFF in Stue office when door open
+  description: ''
+  triggers:
+  - type: opened
+    device_id: e83736ec572e59392c983b72d4ecc2a5
+    entity_id: a2180b19da1c7b8a81a2eb12afa428da
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_livingroom_dropdown
+    data:
+      option: Heat off
+    action: input_select.select_option
+  mode: single
+- id: '1745773920394'
+  alias: Turn off Heating automations
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heating_system_control
+    to: 'off'
+  conditions: []
+  actions:
+  - action: automation.turn_off
+    target:
+      label_id: heating
+    data:
+      stop_actions: true
+  mode: single
+- id: '1745774190022'
+  alias: Turn ON heating automations
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heating_system_control
+    to: 'on'
+  conditions: []
+  actions:
+  - action: automation.turn_on
+    target:
+      label_id: heating
+    data: {}
+  mode: single
+- id: '1745865414278'
+  alias: Water sensor kitchen wet
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.water_leak_sensor_moisture
+    to: 'on'
+  conditions: []
+  actions:
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.change_theme_to_lcars_25c_red_alert
+  - action: notify.persistent_notification
+    metadata: {}
+    data:
+      message: Water alert Kitchen
+  - action: notify.mobile_app_arnes_iphone
+    metadata: {}
+    data:
+      title: Water alert
+      message: Køkken
+  - action: notify.notify
+    metadata: {}
+    data:
+      target: arnelyngemadsen@gmail.com
+      title: Water alert
+      message: Køkken
+  mode: single
+- id: '1745865860756'
+  alias: Water sensor bryggers wet
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.water_leak_sensor_moisture_2
+    to: 'on'
+  conditions: []
+  actions:
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.change_theme_to_lcars_25c_red_alert
+  - action: notify.persistent_notification
+    metadata: {}
+    data:
+      message: Water alert Bryggers
+  - action: notify.mobile_app_arnes_iphone
+    metadata: {}
+    data:
+      message: Bryggers
+      title: Water alert
+  - action: notify.notify
+    metadata: {}
+    data:
+      target: arnelyngemadsen@gmail.com
+      title: Water alert
+      message: Bryggers
+  mode: single
+- id: '1746300762353'
+  alias: Alarm arming beep
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media_content_type: '"audio/wav"'
+      media_content_id: homeassistant:8123/local/countdown.wav
+    target:
+      device_id: 3247dd05c086e54dcc1b588149bdaafa
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.beo_stage
+    data:
+      media_content_type: music
+      media_content_id: homeassistant:8123/local/countdown.mp3
+    metadata: {}
+  mode: single
+- id: '1746975644508'
+  alias: Send mail
+  description: ''
+  triggers:
+  - at: 08:00:00
+    trigger: time
+  actions:
+  - action: notify.sendmail
+    data:
+      title: Good Morning
+      message: Rise and shine
+      target: armadsen@live.com
+- id: '1747426408144'
+  alias: SMS alarm test
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: notify.sms_alarm_list
+    metadata: {}
+    data:
+      message: test
+  mode: single
+- id: '1749383170310'
+  alias: Arm water and smoke alarms
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: time_pattern
+    minutes: /5
+  conditions: []
+  actions:
+  - action: alarmo.arm
+    metadata: {}
+    data:
+      mode: home
+      skip_delay: false
+      force: false
+      entity_id: alarm_control_panel.water_alarm
+  - action: alarmo.arm
+    metadata: {}
+    data:
+      mode: home
+      skip_delay: true
+      force: true
+      entity_id: alarm_control_panel.smoke_alarm
+  mode: single
+- id: '1755075558640'
+  alias: Frigate tracking example
+  description: ''
+  triggers:
+  - topic: frigate/events
+    trigger: mqtt
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload_json.after.top_score > 0.85 }}'
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      message: 'Frigate tracking example. A {{trigger.payload_json["after"]["label"]}}
+        was detected on camera {{ trigger.payload_json.after.camera }}. Sub label:
+        {{ trigger.payload_json.after.sub_label }}. Top score: {{ trigger.payload_json.after.top_score
+        }}.'
+  - delay: 00:00:10
+  mode: single
+- id: '1756458033056'
+  alias: Debian log
+  description: ''
+  triggers:
+  - topic: Debian/status
+    trigger: mqtt
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload != '''' }}'
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.debianmqtt_notification_active
+        state: 'off'
+      sequence:
+      - target:
+          entity_id: input_boolean.debianmqtt_notification_active
+        action: input_boolean.turn_on
+        data: {}
+      - data:
+          entity_id: timer.debianmqtt_notification_timer
+          duration: 00:01:00
+        action: timer.start
+  - data:
+      entity_id: input_text.debianmqtt_textcollector
+      value: '{{ states(''input_text.debianmqtt_textcollector'') ~ ''\n'' ~ trigger.payload
+        }}
+
+        '
+    action: input_text.set_value
+  mode: single
+- id: '1756486140750'
+  alias: Debian log Mail
+  description: ''
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.debianmqtt_notification_timer
+    trigger: event
+  actions:
+  - data:
+      title: Debian logs via HA
+      message: '{{ states(''input_text.debianmqtt_textcollector'') }}'
+    action: notify.sendmail
+  - data:
+      entity_id: input_text.debianmqtt_textcollector
+      value: ''
+    action: input_text.set_value
+  - target:
+      entity_id: input_boolean.debianmqtt_notification_active
+    action: input_boolean.turn_off
+    data: {}
+- id: '1756897377310'
+  alias: Frigate known person detected
+  description: Send notification when a face is recognized by Frigate
+  triggers:
+  - topic: frigate/tracked_object_update
+    trigger: mqtt
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload_json.type == ''face'' }}'
+  - condition: template
+    value_template: '{{ trigger.payload_json.name != ''unknown'' }}'
+  - condition: template
+    value_template: '{{ trigger.payload_json.score > 0.7 }}'
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Frigate known person detected
+      message: '{{trigger.payload_json.name}} was detected on camera {{ trigger.payload_json.camera
+        }}. Score: {{ trigger.payload_json.score }}.'
+  - delay: 00:01:00
+- id: '1757226544131'
+  alias: 'Frigate unknown person detected #2'
+  description: Send notification when a face NOT is recognized by Frigate
+  triggers:
+  - topic: frigate/tracked_object_update
+    trigger: mqtt
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload_json.type == ''face'' }}'
+  - condition: template
+    value_template: '{{ trigger.payload_json.name is none }}'
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Frigate unknown person detected#2
+      message: '{{trigger.payload_json.name}} was detected on camera {{ trigger.payload_json.camera
+        }}. Score: {{ trigger.payload_json.score }}.'
+  - delay: 00:01:00
+- id: '1759081619546'
+  alias: HA startup fix stuff
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.debian_log_mail
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.outdoorlight_automation
+  - type: turn_off
+    device_id: d9ea41a1771af91c48b15839c5b2ef75
+    entity_id: 463be63b0346cb27d90a76d693a4b81e
+    domain: switch
+  mode: single
+- id: '1760891231128'
+  alias: Frigate animal2
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.loft_cat_active_count
+  - trigger: state
+    entity_id:
+    - sensor.bryggers_cat_active_count
+  - trigger: state
+    entity_id:
+    - sensor.driveway_cat_active_count
+  - trigger: state
+    entity_id:
+    - sensor.loft_dog_active_count
+  - trigger: state
+    entity_id:
+    - sensor.bryggers_dog_active_count
+  - trigger: state
+    entity_id:
+    - sensor.driveway_dog_active_count
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 9adecf276fa73ab453fbd44cbfe599eb
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: 83c21336f9c4ae75da5926ca5f1eb75b
+    domain: binary_sensor
+    trigger: device
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      message: 'Frigate animal2 tracking. Cats: Bryggers: {{ states(''sensor.bryggers_cat_active_count'')
+        }}. Driveway: {{ states(''sensor.driveway_cat_active_count'') }}.  Loft: {{
+        states(''sensor.loft_cat_active_count'') }}. Dogs: Bryggers: {{ states(''sensor.bryggers_dog_active_count'')
+        }}. Driveway: {{ states(''sensor.driveway_dog_active_count'') }}.  Loft: {{
+        states(''sensor.loft_dog_active_count'') }}.  Pets: BryggersDoorbell: {{ states(''binary_sensor.bryggers_doorbell_pet'')
+        }}.'
+  - delay: 00:00:10
+  mode: single
+- id: '1760892539016'
+  alias: Frigate person driveway tracking
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.driveway_person_active_count
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.driveway_person_active_count
+    above: 0
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Frigate person driveway tracking
+      message: Frigate driveway person tracking. {{ states('sensor.driveway_person_active_count')
+        }}.
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  mode: single
+- id: '1760892734917'
+  alias: Frigate person bryggers tracking
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.bryggers_person_active_count
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.bryggers_person_active_count
+    above: 0
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Frigate bryggers person tracking
+      message: Frigate bryggers person tracking. {{ states('sensor.bryggers_person_active_count')
+        }}.
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  mode: single
+- id: '1761161278321'
+  alias: LGTV_Heidi
+  description: ''
+  triggers:
+  - device_id: d4214d1bec5b5dea089c6e8e7fcba6b7
+    domain: media_player
+    entity_id: 599e65907922f01e583fc0de6bccb529
+    type: turned_on
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - action: media_player.select_source
+    metadata: {}
+    data:
+      source: TV 2 PLAY
+    target:
+      device_id: d4214d1bec5b5dea089c6e8e7fcba6b7
+  mode: single
+- id: '1761336971894'
+  alias: CamDriveway_Popup
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_cat_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_dog_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_person_active_count
+    above: 0
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: c9afc8240fa260496aa0e980319280c5
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 9adecf276fa73ab453fbd44cbfe599eb
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 399f429da6d651ff6c5190c53a1f34cf
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: input_select.cam_driveway_popup_calmdown
+      state:
+      - 'Off'
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.cam_driveway_popup_calmdown
+      data:
+        option: 'On'
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.cam_bryggers_popup_calmdown
+      data:
+        option: 'Off'
+    - action: timer.start
+      metadata: {}
+      target:
+        entity_id: timer.cam_popup_timer
+      data:
+        duration: 00:00:30
+    - action: browser_mod.popup
+      metadata: {}
+      data:
+        dismissable: true
+        autoclose: false
+        user_id:
+        - person.picard
+        - person.arne_lynge_madsen
+        - person.heidi
+        popup_card_id: dashboard-testlcars/CamDriveway
+    - if:
+      - type: is_powered
+        condition: device
+        device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+        entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+        domain: binary_sensor
+      then:
+      - action: browser_mod.navigate
+        metadata: {}
+        data:
+          user_id:
+          - person.shelly
+          path: /dashboard-testlcars/shelly-frontdoor
+      - action: rest_command.x2_screen_on
+        metadata: {}
+        data: {}
+    else:
+    - action: timer.start
+      metadata: {}
+      target:
+        entity_id: timer.cam_popup_timer
+      data:
+        duration: 00:00:30
+  mode: single
+- id: '1761337020774'
+  alias: CamBryggers_Popup
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bryggers_cat_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bryggers_car_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bryggers_dog_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bryggers_person_active_count
+    above: 0
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: a6d2744e35be2500f7d7c9c9411e7238
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: 83c21336f9c4ae75da5926ca5f1eb75b
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: 43d3dc81c43a8091b34acb33dc519150
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: fadb5cd27247a8fa2c84dcef524b870b
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: input_select.cam_bryggers_popup_calmdown
+      state:
+      - 'Off'
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.cam_bryggers_popup_calmdown
+      data:
+        option: 'On'
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.cam_driveway_popup_calmdown
+      data:
+        option: 'Off'
+    - action: timer.start
+      metadata: {}
+      target:
+        entity_id: timer.cam_popup_timer
+      data:
+        duration: 00:00:30
+    - action: browser_mod.popup
+      metadata: {}
+      data:
+        dismissable: true
+        autoclose: false
+        user_id:
+        - person.picard
+        - person.arne_lynge_madsen
+        - person.heidi
+        popup_card_id: dashboard-testlcars/CamBryggers
+    - if:
+      - type: is_powered
+        condition: device
+        device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+        entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+        domain: binary_sensor
+      then:
+      - action: browser_mod.navigate
+        metadata: {}
+        data:
+          user_id:
+          - person.shelly
+          path: /dashboard-testlcars/shelly-bryggersdoor
+      - action: rest_command.x2_screen_on
+        metadata: {}
+        data: {}
+    else:
+    - action: timer.start
+      metadata: {}
+      target:
+        entity_id: timer.cam_popup_timer
+      data:
+        duration: 00:00:30
+  mode: single
+- id: '1761379825808'
+  alias: CamDriveway
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_cat_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_dog_active_count
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.driveway_person_active_count
+    above: 0
+  conditions: []
+  actions:
+  - action: browser_mod.navigate
+    metadata: {}
+    data:
+      user_id:
+      - person.shelly
+      path: /dashboard-testlcars/shelly
+  mode: single
+- id: '1761461109163'
+  alias: Outdoor light On and reset timer
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: a6d2744e35be2500f7d7c9c9411e7238
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: 43d3dc81c43a8091b34acb33dc519150
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: c9afc8240fa260496aa0e980319280c5
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: ae174fab9db346665636d74baea561e3
+    entity_id: 1b9928a5934d9d3ffca1d217d7514560
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: 78e275c89cd55a185cf74c15ee548334
+    entity_id: 2860b0847d61774820a3d10bc479d83a
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: 834b4a6f528d0795805aca7355540cde
+    entity_id: e3bd091d49bca58d4bbf61e9fdd7ee03
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: 834b4a6f528d0795805aca7355540cde
+    entity_id: 99ef62529772bf3a159e16674e0905fc
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: b4d747a3aebc05fe7535df1462025ac0
+    entity_id: 96287fc019d4674c728379305c40455a
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: b4d747a3aebc05fe7535df1462025ac0
+    entity_id: 7d258cb5430058bf071c95cfcfaab230
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+  actions:
+  - type: turn_on
+    device_id: e976e5279e803f6a9579d039ae1ea0ca
+    entity_id: f8a7fb85f346896f5cfd5d671da2d034
+    domain: switch
+  - type: turn_on
+    device_id: 965b166ac969237d99970e715564c70a
+    entity_id: e947b668177827855acc11cd492a440f
+    domain: switch
+  - data:
+      entity_id: timer.outdoor_light_timer
+    action: timer.cancel
+  - data:
+      entity_id: timer.outdoor_light_timer
+      duration: 00:00:59
+    action: timer.start
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.outdoorligths
+  mode: restart
+- id: '1761462563107'
+  alias: Turn off Outdoor light after timer
+  description: ''
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.outdoor_light_timer
+    trigger: event
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.driveway_person_active_count
+          above: 0
+        - condition: numeric_state
+          entity_id: sensor.bryggers_person_active_count
+          above: 0
+      sequence:
+      - data:
+          entity_id: timer.outdoor_light_timer
+        action: timer.cancel
+      - data:
+          entity_id: timer.outdoor_light_timer
+          duration: 00:00:30
+        action: timer.start
+    default:
+    - type: turn_off
+      device_id: e976e5279e803f6a9579d039ae1ea0ca
+      entity_id: f8a7fb85f346896f5cfd5d671da2d034
+      domain: switch
+    - type: turn_off
+      device_id: 965b166ac969237d99970e715564c70a
+      entity_id: e947b668177827855acc11cd492a440f
+      domain: switch
+    - target:
+        entity_id: input_boolean.outdoorligths
+      action: input_boolean.turn_off
+      data: {}
+  mode: single
+- id: '1761502576773'
+  alias: Switch on outdoor ligths
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.outdoorligthsmanual
+    from: 'off'
+    to: 'on'
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: e976e5279e803f6a9579d039ae1ea0ca
+    entity_id: f8a7fb85f346896f5cfd5d671da2d034
+    domain: switch
+  - type: turn_on
+    device_id: 965b166ac969237d99970e715564c70a
+    entity_id: e947b668177827855acc11cd492a440f
+    domain: switch
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.outdoorlight_automation
+  mode: single
+- id: '1761502699281'
+  alias: Switch off outdoor ligths
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.outdoorligthsmanual
+    from: 'on'
+    to: 'off'
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: e976e5279e803f6a9579d039ae1ea0ca
+    entity_id: f8a7fb85f346896f5cfd5d671da2d034
+    domain: switch
+  - type: turn_off
+    device_id: 965b166ac969237d99970e715564c70a
+    entity_id: e947b668177827855acc11cd492a440f
+    domain: switch
+  mode: single
+- id: '1761681067595'
+  alias: Switch off outdoor light automatics
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.outdoorlight_automation
+    from: 'on'
+    to: 'off'
+  conditions: []
+  actions:
+  - action: automation.turn_off
+    target:
+      entity_id: automation.outdoor_light_on_and_reset_timer
+    data:
+      stop_actions: true
+  - action: automation.turn_off
+    target:
+      entity_id: automation.turn_off_outdoor_light_after_timer
+    data:
+      stop_actions: true
+  mode: single
+- id: '1761681106194'
+  alias: Switch on outdoor light automatics
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.outdoorlight_automation
+    from: 'off'
+    to: 'on'
+  actions:
+  - action: automation.turn_on
+    target:
+      entity_id: automation.outdoor_light_on_and_reset_timer
+    data: {}
+  - action: automation.turn_on
+    target:
+      entity_id: automation.turn_off_outdoor_light_after_timer
+    data: {}
+  mode: single
+- id: '1766265272418'
+  alias: Doorbell Bryggers D340P
+  description: Get a snapshot
+  triggers:
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: fadb5cd27247a8fa2c84dcef524b870b
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - condition: device
+      device_id: 9fcf37ccb81ad51ae64e6484a461c871
+      domain: media_player
+      entity_id: 838b575ba78bb3f2e44c0b5cdc25f787
+      type: is_playing
+    then:
+    - action: notify.lg_webos_tv_oled65c35la
+      metadata: {}
+      data:
+        message: Det ringer på Bryggersdøren :-)
+  - if:
+    - condition: device
+      device_id: d4214d1bec5b5dea089c6e8e7fcba6b7
+      domain: media_player
+      entity_id: 599e65907922f01e583fc0de6bccb529
+      type: is_on
+    then:
+    - action: notify.lg_webos_tv_55nano866na
+      metadata: {}
+      data:
+        message: Det ringer på Bryggersdøren :-)
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.doorbell_bryggers
+    data:
+      skip_condition: true
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.test_doorbell_both
+    data:
+      skip_condition: true
+  - data:
+      entity_id: camera.driveway_2
+      filename: /config/www/driveway.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.bryggers_2
+      filename: /config/www/bryggers.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.bryggers_doorbell_fluent
+      filename: /config/www/bryggersdoorbell.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.front_door_fluent
+      filename: /config/www/entredoorbell.jpg
+    action: camera.snapshot
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Det ringer på Bryggersdøren :-)
+      message: Det ringer på Bryggersdøren :-)
+      target:
+      - arnelyngemadsen@gmail.com
+      - heidilyngemadsen@gmail.com
+      data:
+        images:
+        - /config/www/driveway.jpg
+        - /config/www/bryggers.jpg
+        - /config/www/bryggersdoorbell.jpg
+        - /config/www/entredoorbell.jpg
+  mode: single
+- id: '1766911541046'
+  alias: Shelly wall display horizontal
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - if:
+    - type: is_powered
+      condition: device
+      device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+      entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+      domain: binary_sensor
+    then:
+    - action: browser_mod.navigate
+      metadata: {}
+      data:
+        user_id:
+        - person.shelly
+        path: /lcars-shelly-display/0
+    - action: rest_command.x2_screen_on
+      metadata: {}
+      data: {}
+  mode: single
+- id: '1767013598066'
+  alias: Shelly X2 screen on
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - if:
+    - type: is_powered
+      condition: device
+      device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+      entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+      domain: binary_sensor
+    then:
+    - action: rest_command.x2_screen_on
+      metadata: {}
+      data: {}
+  mode: single
+- id: '1767123040215'
+  alias: Doorbell Entre D340P
+  description: Get a snapshot
+  triggers:
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 399f429da6d651ff6c5190c53a1f34cf
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - condition: device
+      device_id: 9fcf37ccb81ad51ae64e6484a461c871
+      domain: media_player
+      entity_id: 838b575ba78bb3f2e44c0b5cdc25f787
+      type: is_playing
+    then:
+    - action: notify.lg_webos_tv_oled65c35la
+      metadata: {}
+      data:
+        message: Det ringer på Entredøren :-)
+  - if:
+    - condition: device
+      device_id: d4214d1bec5b5dea089c6e8e7fcba6b7
+      domain: media_player
+      entity_id: 599e65907922f01e583fc0de6bccb529
+      type: is_on
+    then:
+    - action: notify.lg_webos_tv_55nano866na
+      metadata: {}
+      data:
+        message: Det ringer på Entredøren :-)
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.doorbell_bryggers
+    data:
+      skip_condition: true
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.test_doorbell_both
+    data:
+      skip_condition: true
+  - data:
+      entity_id: camera.driveway_2
+      filename: /config/www/driveway.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.bryggers_2
+      filename: /config/www/bryggers.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.bryggers_doorbell_fluent
+      filename: /config/www/bryggersdoorbell.jpg
+    action: camera.snapshot
+  - data:
+      entity_id: camera.front_door_fluent
+      filename: /config/www/entredoorbell.jpg
+    action: camera.snapshot
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      title: Det ringer på Entredøren :-)
+      message: Det ringer på Entredøren :-)
+      target:
+      - arnelyngemadsen@gmail.com
+      - heidilyngemadsen@gmail.com
+      data:
+        images:
+        - /config/www/driveway.jpg
+        - /config/www/bryggers.jpg
+        - /config/www/bryggersdoorbell.jpg
+        - /config/www/entredoorbell.jpg
+  mode: single
+- id: '1767284492306'
+  alias: CamFrontdoor_popup
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 399f429da6d651ff6c5190c53a1f34cf
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: browser_mod.popup
+    metadata: {}
+    data:
+      dismissable: true
+      autoclose: false
+      user_id:
+      - person.picard
+      - person.arne_lynge_madsen
+      - person.heidi
+      popup_card_id: dashboard-testlcars/DoorbellEntre
+  mode: single
+- id: '1767284938251'
+  alias: CamBryggersdoor_popup
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: fadb5cd27247a8fa2c84dcef524b870b
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: browser_mod.popup
+    metadata: {}
+    data:
+      dismissable: true
+      autoclose: false
+      user_id:
+      - person.picard
+      - person.arne_lynge_madsen
+      - person.heidi
+      popup_card_id: dashboard-testlcars/DoorbellBryggers
+  mode: single
+- id: '1767286370143'
+  alias: Shelly wall display restart
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  conditions: []
+  actions:
+  - device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+    domain: button
+    entity_id: fbe2023a22be7451f67ea7fad0684b30
+    type: press
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.shelly_wall_display_horizontal
+    data:
+      skip_condition: true
+  mode: single
+- id: '1767346698092'
+  alias: Shelly wall display alarm triggered
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - if:
+    - type: is_powered
+      condition: device
+      device_id: 4e74b5f44ccba045f0ab31b84fe2175e
+      entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
+      domain: binary_sensor
+    then:
+    - action: rest_command.x2_screen_on
+      metadata: {}
+      data: {}
+    - action: rest_command.x2_alarm
+      metadata: {}
+      data: {}
+  mode: single
+- id: '1767731858337'
+  alias: Pet detected BryggersD340P
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: 83c21336f9c4ae75da5926ca5f1eb75b
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: shell_command.bryggersdoorbell_trigger_dog_event
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1767732342577'
+  alias: Pet detected EntreD340P
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: 9adecf276fa73ab453fbd44cbfe599eb
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: shell_command.entredoorbell_trigger_dog_event
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1768928855440'
+  alias: Nordlys alert
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.aurora_visibility_visibility_alert
+  conditions: []
+  actions:
+  - action: notify.sendmail
+    metadata: {}
+    data:
+      target:
+      - arnelyngemadsen@gmail.com
+      - heidilyngemadsen@gmail.com
+      message: Chance for nordlys :-) Mvh HomeAssistant
+      title: Chance for nordlys :-) Mvh HomeAssistant
+  mode: single
+- id: '1769195572556'
+  alias: Cam_Popup_cleanup
+  description: ''
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.cam_popup_timer
+    trigger: event
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.cam_bryggers_popup_calmdown
+    data:
+      option: 'Off'
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.cam_driveway_popup_calmdown
+    data:
+      option: 'Off'
+  - action: browser_mod.navigate
+    metadata: {}
+    data:
+      user_id:
+      - person.shelly
+      path: /lcars-shelly-display/0
+  mode: single
+- id: '1769939829841'
+  alias: Danfoss Soveværelse turn on heating
+  description: ''
+  triggers:
+  - trigger: time
+    at: 06:05:00
+  conditions:
+  - condition: state
+    entity_id: binary_sensor.shelly_blu_door_window_2011_window
+    state:
+    - 'off'
+  actions:
+  - target:
+      entity_id:
+      - input_select.heat_bedroom_dropdown
+    data:
+      option: Heat on
+    action: input_select.select_option
+  mode: single
+- id: '1770019643585'
+  alias: imap fetch and seen example
+  description: Fetch and mark an incoming message as seen
+  triggers:
+  - trigger: event
+    event_type: imap_content
+    event_data:
+      entry_id: 01JN6X6NP41YGWB9J7GWSMB8K9
+  conditions:
+  - condition: template
+    value_template: "{{ trigger.event.data['sender'] in [\n  'arnelyngemadsen@gmail.com',\n
+      \ 'heidilyngemadsen@gmail.com'\n] }}\n"
+  actions:
+  - action: imap.fetch
+    data:
+      entry: 01JN6X6NP41YGWB9J7GWSMB8K9
+      uid: '{{ trigger.event.data[''uid''] }}'
+    response_variable: message_text
+  - action: imap.seen
+    data:
+      entry: 01JN6X6NP41YGWB9J7GWSMB8K9
+      uid: '{{ trigger.event.data[''uid''] }}'
+  - action: seventeentrack.add_package
+    data:
+      config_entry_id: 01KGD5B294T7BB1DM19ZFBJ9MP
+      package_tracking_number: '{{ message_text[''subject''].split('' '') | last }}'
+      package_friendly_name: '{{ message_text[''subject''].split('' '')[:-1] | join(''
+        '') }}'
+  - action: persistent_notification.create
+    data:
+      message: '{{ message_text[''subject''].split('' '')[:-1] | join('' '') }}'
+  - action: persistent_notification.create
+    data:
+      message: '{{ message_text[''subject''].split('' '') | last }}'
+- id: '1770035936906'
+  alias: Register Package at 17Track
+  description: Register package using mail to pakke@lynge.agency
+  triggers:
+  - trigger: event
+    event_type: imap_content
+    event_data:
+      entry_id: 01KGF5RW1NTPTE3CKT8S5TW9FS
+  conditions:
+  - condition: template
+    value_template: "{{ trigger.event.data['sender'] in [\n  'arnelyngemadsen@gmail.com',\n
+      \ 'heidilyngemadsen@gmail.com'\n] }}\n"
+  actions:
+  - action: imap.fetch
+    data:
+      entry: 01KGF5RW1NTPTE3CKT8S5TW9FS
+      uid: '{{ trigger.event.data[''uid''] }}'
+    response_variable: message_text
+  - action: imap.seen
+    data:
+      entry: 01KGF5RW1NTPTE3CKT8S5TW9FS
+      uid: '{{ trigger.event.data[''uid''] }}'
+  - action: persistent_notification.create
+    data:
+      message: '{{ message_text[''subject''] }}: input'
+  - action: seventeentrack.add_package
+    data:
+      config_entry_id: 01KGD5B294T7BB1DM19ZFBJ9MP
+      package_tracking_number: '{{ message_text[''subject''].split('' '') | last }}'
+      package_friendly_name: '{{ message_text[''subject''].split('' '')[:-1] | join(''
+        '') }}'
+  - action: persistent_notification.create
+    data:
+      message: '{{ message_text[''subject''] }}: done'
+  mode: single
+- id: '1770148489007'
+  alias: Adax Home 21 stue el-radiator
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.heat_livingroom_el_radiator_dropdown
+    to:
+    - Heat on
+    from:
+    - Heat off
+  conditions: []
+  actions:
+  - action: timer.start
+    metadata: {}
+    target:
+      entity_id: timer.adax_shut_down_timer
+    data:
+      duration:
+        hours: 2
+        minutes: 0
+        seconds: 0
+  - action: timer.start
+    metadata: {}
+    data:
+      duration:
+        hours: 0
+        minutes: 15
+        seconds: 0
+    target:
+      entity_id: timer.adax_shut_down_blackout_timer
+  - action: climate.set_temperature
+    metadata: {}
+    target:
+      device_id: 83f4df0c0d377b73c5cdbb1ab9b63b3b
+    data:
+      temperature: 22
+      hvac_mode: heat
+  mode: single
+- id: '1770234219778'
+  alias: Adax shut off actions
+  description: ''
+  triggers:
+  - trigger: time
+    at: '21:45:00'
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.adax_shut_down_timer
+    trigger: event
+  - trigger: state
+    entity_id:
+    - input_select.heat_livingroom_el_radiator_dropdown
+    from:
+    - Heat on
+    to:
+    - Heat off
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.heat_livingroom_el_radiator_dropdown
+    data:
+      option: Heat off
+  - action: climate.set_temperature
+    metadata: {}
+    target:
+      device_id: 83f4df0c0d377b73c5cdbb1ab9b63b3b
+    data:
+      hvac_mode: 'off'
+      temperature: 5
+  mode: single
+- id: '1770380258974'
+  alias: External heat on
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - climate.living_room
+    attribute: temperature
+    above: 20
+  conditions: []
+  actions:
+  - action: automation.turn_off
+    metadata: {}
+    target:
+      entity_id: automation.adax_home_21_stue_el_radiator
+    data:
+      stop_actions: true
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.heat_livingroom_el_radiator_dropdown
+    data:
+      option: Heat on
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - action: automation.turn_on
+    metadata: {}
+    target:
+      entity_id: automation.adax_home_21_stue_el_radiator
+    data: {}
+  - action: timer.start
+    metadata: {}
+    target:
+      entity_id: timer.adax_shut_down_timer
+    data:
+      duration:
+        hours: 2
+        minutes: 0
+        seconds: 0
+  - action: timer.start
+    metadata: {}
+    data:
+      duration:
+        hours: 0
+        minutes: 15
+        seconds: 0
+    target:
+      entity_id: timer.adax_shut_down_blackout_timer
+  mode: single
+- id: '1770657931541'
+  alias: Person Cam tracker
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 28902908838bd06fe7dcad12604abae7
+    entity_id: a6d2744e35be2500f7d7c9c9411e7238
+    domain: binary_sensor
+    trigger: device
+  - type: turned_on
+    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+    entity_id: c9afc8240fa260496aa0e980319280c5
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: a792da20968e5539ce588327c4d716d2
+    entity_id: 3dfe34de7b8753c90369746fe652be3a
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: b4d747a3aebc05fe7535df1462025ac0
+    entity_id: 96287fc019d4674c728379305c40455a
+    domain: binary_sensor
+    trigger: device
+  - type: occupied
+    device_id: ae174fab9db346665636d74baea561e3
+    entity_id: 1b9928a5934d9d3ffca1d217d7514560
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - type: is_occupied
+      condition: device
+      device_id: a792da20968e5539ce588327c4d716d2
+      entity_id: 3dfe34de7b8753c90369746fe652be3a
+      domain: binary_sensor
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.dropdown_person_tracker
+      data:
+        option: Loft
+  - if:
+    - type: is_on
+      condition: device
+      device_id: 28902908838bd06fe7dcad12604abae7
+      entity_id: a6d2744e35be2500f7d7c9c9411e7238
+      domain: binary_sensor
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.dropdown_person_tracker
+      data:
+        option: Bryggersdoor
+  - if:
+    - type: is_on
+      condition: device
+      device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
+      entity_id: c9afc8240fa260496aa0e980319280c5
+      domain: binary_sensor
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.dropdown_person_tracker
+      data:
+        option: Entredoor
+  - if:
+    - type: is_occupied
+      condition: device
+      device_id: ae174fab9db346665636d74baea561e3
+      entity_id: 1b9928a5934d9d3ffca1d217d7514560
+      domain: binary_sensor
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.dropdown_person_tracker
+      data:
+        option: Driveway
+  - if:
+    - type: is_occupied
+      condition: device
+      device_id: b4d747a3aebc05fe7535df1462025ac0
+      entity_id: 96287fc019d4674c728379305c40455a
+      domain: binary_sensor
+    then:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.dropdown_person_tracker
+      data:
+        option: Bryggers
+  mode: single
+- id: '1771704704569'
+  alias: External ADAX shut down actions
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - climate.living_room
+    attribute: temperature
+    below: 10
+  - device_id: 83f4df0c0d377b73c5cdbb1ab9b63b3b
+    domain: climate
+    entity_id: 2e808815eab33047cdd5f87ab143421f
+    type: hvac_mode_changed
+    trigger: device
+    to: 'off'
+  conditions:
+  - condition: state
+    entity_id: timer.adax_shut_down_blackout_timer
+    state:
+    - idle
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    target:
+      entity_id: input_select.heat_livingroom_el_radiator_dropdown
+    data:
+      option: Heat off
+  - action: climate.set_temperature
+    metadata: {}
+    target:
+      device_id: 83f4df0c0d377b73c5cdbb1ab9b63b3b
+    data:
+      hvac_mode: 'off'
+      temperature: 5
+  mode: single

@@ -1,0 +1,49 @@
+blueprint:
+  name: Update Danfoss Ally™ External Temperature
+  description: Use one or more temperature sensors as a reference for one or more
+    Danfoss Ally™ thermostats
+  domain: automation
+  author: Thomas Barnekov
+  input:
+    temperature_sensors:
+      name: Temperature sensors
+      description: Select the sensors you want your thermostat to use
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - sensor
+            device_class:
+            - temperature
+    target_thermostats:
+      name: Ally thermostats
+      description: The selected thermostats will be updated using the average temperature
+        measured by the sensors selected above
+      selector:
+        target:
+          entity:
+          - integration: danfoss_ally
+            domain:
+            - climate
+          device:
+          - integration: danfoss_ally
+            model: Danfoss Ally™ Radiator Thermostat
+  source_url: https://gist.github.com/tbarnekov/02962fb065d8a6831d11ebeead4d6141
+variables:
+  temperature_entities: !input temperature_sensors
+trigger:
+- platform: state
+  entity_id: !input temperature_sensors
+- platform: time_pattern
+  minutes: /30
+action:
+- alias: Set external temperature
+  service: danfoss_ally.set_external_temperature
+  data:
+    temperature: '{% set sensors = expand(temperature_entities) | map(attribute=''state'')
+      | map(''float'', none) | reject(''eq'', none) | list %} {{ ((sensors | sum)
+      / (sensors | count)) | round(2) }}
+
+      '
+  target: !input target_thermostats
