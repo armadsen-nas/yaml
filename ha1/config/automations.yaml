@@ -2052,15 +2052,15 @@
           hours: 0
           minutes: 0
           seconds: 30
-    - action: rest_command.x2_beep
-      metadata: {}
-      data: {}
     - action: automation.trigger
       metadata: {}
       target:
         entity_id: automation.change_theme_to_lcars_yellow_alert
       data:
         skip_condition: true
+    - action: rest_command.x2_beep
+      metadata: {}
+      data: {}
   mode: single
 - id: '1771704704569'
   alias: External ADAX shut down actions
