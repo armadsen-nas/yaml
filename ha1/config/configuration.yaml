@@ -166,6 +166,23 @@ rest_command:
           "duration": 30000
         }
       }
+# Play ringtone ID.3.
+  x2_beep:
+    url: "http://192.168.1.41/rpc/Media.MediaPlayer.PlayRingTone"
+    method: POST
+    verify_ssl: false
+    content_type: "application/json"
+    payload: >
+      {
+        "id": 0,
+        "method": "Media.MediaPlayer.PlayRingTone",
+        "params": {
+          "id": 3,
+          "sound": audio,
+          "volume": 2,
+          "duration": 10000
+        }
+      }
 
 shell_command:
 # For Doorbell cameras Reolink D340P, we use the D340P detection. Not frigate detection.

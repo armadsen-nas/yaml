@@ -2293,3 +2293,57 @@
       hvac_mode: 'off'
       temperature: 5
   mode: single
+- id: '1771867623752'
+  alias: ADAX shut down blackout timer expires
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.adax_shut_down_blackout_timer
+    from:
+    - active
+    to:
+    - idle
+  conditions: []
+  actions:
+  - if:
+    - condition: numeric_state
+      entity_id: climate.living_room
+      attribute: temperature
+      above: 20
+    then:
+    - action: automation.turn_off
+      metadata: {}
+      target:
+        entity_id: automation.adax_home_21_stue_el_radiator
+      data:
+        stop_actions: true
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 15
+        milliseconds: 0
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.heat_livingroom_el_radiator_dropdown
+      data:
+        option: Heat on
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 15
+        milliseconds: 0
+    - action: automation.turn_on
+      metadata: {}
+      target:
+        entity_id: automation.adax_home_21_stue_el_radiator
+      data: {}
+    else:
+    - action: input_select.select_option
+      metadata: {}
+      target:
+        entity_id: input_select.heat_livingroom_el_radiator_dropdown
+      data:
+        option: Heat off
+  mode: single
