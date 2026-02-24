@@ -1148,197 +1148,6 @@
     target:
       device_id: d4214d1bec5b5dea089c6e8e7fcba6b7
   mode: single
-- id: '1761336971894'
-  alias: CamDriveway_Popup
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.driveway_cat_active_count
-    above: 0
-  - trigger: numeric_state
-    entity_id:
-    - sensor.driveway_dog_active_count
-    above: 0
-  - trigger: numeric_state
-    entity_id:
-    - sensor.driveway_person_active_count
-    above: 0
-  - type: turned_on
-    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
-    entity_id: c9afc8240fa260496aa0e980319280c5
-    domain: binary_sensor
-    trigger: device
-  - type: turned_on
-    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
-    entity_id: 9adecf276fa73ab453fbd44cbfe599eb
-    domain: binary_sensor
-    trigger: device
-  - type: turned_on
-    device_id: 1badb0f2c33130c2b6a319f5ed14d3b6
-    entity_id: 399f429da6d651ff6c5190c53a1f34cf
-    domain: binary_sensor
-    trigger: device
-  conditions: []
-  actions:
-  - if:
-    - condition: state
-      entity_id: input_select.cam_driveway_popup_calmdown
-      state:
-      - 'Off'
-    then:
-    - action: input_select.select_option
-      metadata: {}
-      target:
-        entity_id: input_select.cam_driveway_popup_calmdown
-      data:
-        option: 'On'
-    - action: input_select.select_option
-      metadata: {}
-      target:
-        entity_id: input_select.cam_bryggers_popup_calmdown
-      data:
-        option: 'Off'
-    - action: timer.start
-      metadata: {}
-      target:
-        entity_id: timer.cam_popup_timer
-      data:
-        duration: 00:00:30
-    - action: browser_mod.popup
-      metadata: {}
-      data:
-        dismissable: true
-        autoclose: false
-        user_id:
-        - person.picard
-        - person.arne_lynge_madsen
-        - person.heidi
-        popup_card_id: dashboard-testlcars/CamDriveway
-    - if:
-      - type: is_powered
-        condition: device
-        device_id: 4e74b5f44ccba045f0ab31b84fe2175e
-        entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
-        domain: binary_sensor
-      then:
-      - action: browser_mod.navigate
-        metadata: {}
-        data:
-          user_id:
-          - person.shelly
-          path: /dashboard-testlcars/shelly-frontdoor
-      - action: rest_command.x2_screen_on
-        metadata: {}
-        data: {}
-    else:
-    - action: timer.start
-      metadata: {}
-      target:
-        entity_id: timer.cam_popup_timer
-      data:
-        duration: 00:00:30
-  mode: single
-- id: '1761337020774'
-  alias: CamBryggers_Popup
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.bryggers_cat_active_count
-    above: 0
-  - trigger: numeric_state
-    entity_id:
-    - sensor.bryggers_car_active_count
-    above: 0
-  - trigger: numeric_state
-    entity_id:
-    - sensor.bryggers_dog_active_count
-    above: 0
-  - trigger: numeric_state
-    entity_id:
-    - sensor.bryggers_person_active_count
-    above: 0
-  - type: turned_on
-    device_id: 28902908838bd06fe7dcad12604abae7
-    entity_id: a6d2744e35be2500f7d7c9c9411e7238
-    domain: binary_sensor
-    trigger: device
-  - type: turned_on
-    device_id: 28902908838bd06fe7dcad12604abae7
-    entity_id: 83c21336f9c4ae75da5926ca5f1eb75b
-    domain: binary_sensor
-    trigger: device
-  - type: turned_on
-    device_id: 28902908838bd06fe7dcad12604abae7
-    entity_id: 43d3dc81c43a8091b34acb33dc519150
-    domain: binary_sensor
-    trigger: device
-  - type: turned_on
-    device_id: 28902908838bd06fe7dcad12604abae7
-    entity_id: fadb5cd27247a8fa2c84dcef524b870b
-    domain: binary_sensor
-    trigger: device
-  conditions: []
-  actions:
-  - if:
-    - condition: state
-      entity_id: input_select.cam_bryggers_popup_calmdown
-      state:
-      - 'Off'
-    then:
-    - action: input_select.select_option
-      metadata: {}
-      target:
-        entity_id: input_select.cam_bryggers_popup_calmdown
-      data:
-        option: 'On'
-    - action: input_select.select_option
-      metadata: {}
-      target:
-        entity_id: input_select.cam_driveway_popup_calmdown
-      data:
-        option: 'Off'
-    - action: timer.start
-      metadata: {}
-      target:
-        entity_id: timer.cam_popup_timer
-      data:
-        duration: 00:00:30
-    - action: browser_mod.popup
-      metadata: {}
-      data:
-        dismissable: true
-        autoclose: false
-        user_id:
-        - person.picard
-        - person.arne_lynge_madsen
-        - person.heidi
-        popup_card_id: dashboard-testlcars/CamBryggers
-    - if:
-      - type: is_powered
-        condition: device
-        device_id: 4e74b5f44ccba045f0ab31b84fe2175e
-        entity_id: 9271adb116b6ee32fbaf75eaa00f0a79
-        domain: binary_sensor
-      then:
-      - action: browser_mod.navigate
-        metadata: {}
-        data:
-          user_id:
-          - person.shelly
-          path: /dashboard-testlcars/shelly-bryggersdoor
-      - action: rest_command.x2_screen_on
-        metadata: {}
-        data: {}
-    else:
-    - action: timer.start
-      metadata: {}
-      target:
-        entity_id: timer.cam_popup_timer
-      data:
-        duration: 00:00:30
-  mode: single
 - id: '1761379825808'
   alias: CamDriveway
   description: ''
@@ -1915,35 +1724,6 @@
       message: Chance for nordlys :-) Mvh HomeAssistant
       title: Chance for nordlys :-) Mvh HomeAssistant
   mode: single
-- id: '1769195572556'
-  alias: Cam_Popup_cleanup
-  description: ''
-  triggers:
-  - event_type: timer.finished
-    event_data:
-      entity_id: timer.cam_popup_timer
-    trigger: event
-  conditions: []
-  actions:
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.cam_bryggers_popup_calmdown
-    data:
-      option: 'Off'
-  - action: input_select.select_option
-    metadata: {}
-    target:
-      entity_id: input_select.cam_driveway_popup_calmdown
-    data:
-      option: 'Off'
-  - action: browser_mod.navigate
-    metadata: {}
-    data:
-      user_id:
-      - person.shelly
-      path: /lcars-shelly-display/0
-  mode: single
 - id: '1769939829841'
   alias: Danfoss Soveværelse turn on heating
   description: ''
@@ -2257,6 +2037,30 @@
         entity_id: input_select.dropdown_person_tracker
       data:
         option: Bryggers
+  - if:
+    - condition: state
+      entity_id: timer.person_outside_detected_timer
+      state:
+      - idle
+    then:
+    - action: timer.start
+      metadata: {}
+      target:
+        entity_id: timer.person_outside_detected_timer
+      data:
+        duration:
+          hours: 0
+          minutes: 0
+          seconds: 30
+    - action: rest_command.x2_beep
+      metadata: {}
+      data: {}
+    - action: automation.trigger
+      metadata: {}
+      target:
+        entity_id: automation.change_theme_to_lcars_yellow_alert
+      data:
+        skip_condition: true
   mode: single
 - id: '1771704704569'
   alias: External ADAX shut down actions
@@ -2346,4 +2150,24 @@
         entity_id: input_select.heat_livingroom_el_radiator_dropdown
       data:
         option: Heat off
+  mode: single
+- id: '1771939160226'
+  alias: Person cam tracker timer expires
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.person_outside_detected_timer
+    from:
+    - active
+    to:
+    - idle
+  conditions: []
+  actions:
+  - action: automation.trigger
+    metadata: {}
+    target:
+      entity_id: automation.change_to_lcars_modern
+    data:
+      skip_condition: true
   mode: single
