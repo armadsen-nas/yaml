@@ -1,7 +1,6 @@
 services:
   webtop:
-#    image: lscr.io/linuxserver/webtop:ubuntu-kde
-    image: webtop-vscode
+    image: lscr.io/linuxserver/webtop:ubuntu-kde
     container_name: webtop
     privileged: false
     security_opt:
