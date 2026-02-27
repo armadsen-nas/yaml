@@ -19,20 +19,14 @@ detectors:
     device: usb
 # Corel end
 
-# Detector for yolov9 model
-#detectors:
-#  onnx:
-#    type: onnx
-
-#model:
-#  model_type: yolo-generic
-#  width: 320
-#  height: 320
-#  input_tensor: nchw
-#  input_dtype: float
-#  path: /config/model_cache/yolov9-t-320.onnx
-#  labelmap_path: /labelmap/coco-80.txt
-# Yolo end
+# Corel model start
+model:
+  model_type: yolo-generic
+  width: 320 # <--- should match the imgsize of the model, typically 320
+  height: 320 # <--- should match the imgsize of the model, typically 320
+  path: /config/model_cache/yolov9-s-relu6-best_320_int8_edgetpu.tflite
+  labelmap_path: /config/labels-coco17.txt
+# Corel model end
 
 # Object detector is Intel GPU.
 #detectors:
@@ -86,10 +80,10 @@ ffmpeg:
 
 record:
   enabled: true
-  retain:
+  continuous:
+    days: 0
+  motion:
     days: 5
-    mode: motion
-
 cameras:
   Driveway:
     enabled: true
@@ -235,9 +229,10 @@ cameras:
         - 0.198,0.013,0.201,0.05,0.357,0.05,0.361,0.008
     record:
       enabled: true
-      retain:
+      continuous:
         days: 5
-        mode: all # to enable that HA can start a recording using a shell call.
+      motion:
+        days: 0
   EntreD340P:
     enabled: true
     ffmpeg:
@@ -270,10 +265,11 @@ cameras:
       mask: 0.198,0.005,0.2,0.058,0.351,0.057,0.356,0.011
     record:
       enabled: true
-      retain:
+      continuous:
         days: 5
-        mode: all # to enable that HA can start a recording using a shell call.
+      motion:
+        days: 0
 camera_groups: {}
 detect:
   enabled: true
-version: 0.16-0
+version: 0.17-0
